@@ -25,6 +25,10 @@ export class SensoresService {
 
   async create(createSensorDto: CreateSensorDto) {
     try {
+      // Limitar humedadSuelo a 100
+      if (createSensorDto.humedadSuelo > 100) {
+        createSensorDto.humedadSuelo = 100;
+      }
       const sensor = this.sensorRepository.create(createSensorDto);
       await this.sensorRepository.save(sensor);
       return sensor;

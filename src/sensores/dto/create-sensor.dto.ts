@@ -36,4 +36,7 @@ export class CreateSensorDto {
   @Type(() => Number)
   @IsNumber()
   humedadExterna: number;
+
+  @IsBoolean()
+  riegoActivo: boolean;
 }

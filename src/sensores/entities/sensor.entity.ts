@@ -49,6 +49,10 @@ export class Sensor {
   @IsNumber()
   humedadExterna: number;
 
+  @Column('boolean', { default: false })
+  @IsBoolean()
+  riegoActivo: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 }
