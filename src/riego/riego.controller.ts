@@ -15,6 +15,16 @@ import { UpdateRiegoDto } from './dto/update-riego.dto';
 export class RiegoController {
   constructor(private readonly riegoService: RiegoService) {}
 
+  @Get('modo')
+  getModoActual() {
+    return this.riegoService.getModoActual();
+  }
+
+  @Patch('modo')
+  setModo(@Body() body: { modo: 'manual' | 'automatico'; activar?: boolean }) {
+    return this.riegoService.setModo(body);
+  }
+
   @Post()
   create(@Body() createRiegoDto: CreateRiegoDto) {
     return this.riegoService.create(createRiegoDto);

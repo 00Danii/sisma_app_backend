@@ -7,10 +7,32 @@ import { UpdateRiegoDto } from './dto/update-riego.dto';
 
 @Injectable()
 export class RiegoService {
+  private modoActual: 'manual' | 'automatico' = 'automatico';
+  private bombaActiva: boolean = false;
+
   constructor(
     @InjectRepository(Riego)
     private readonly riegoRepository: Repository<Riego>,
   ) {}
+
+  getModoActual() {
+    return { modo: this.modoActual, activar: this.bombaActiva };
+  }
+
+  setModo(data: { modo: 'manual' | 'automatico'; activar?: boolean }) {
+    this.modoActual = data.modo;
+
+    if (data.modo === 'manual') {
+      this.bombaActiva = data.activar ?? false;
+    } else {
+      this.bombaActiva = false; // seguridad: apagamos bomba en automático
+    }
+
+    return {
+      message: `Modo actualizado a ${data.modo}`,
+      activar: this.bombaActiva,
+    };
+  }
 
   async create(createRiegoDto: CreateRiegoDto): Promise<Riego> {
     const { horaInicio, horaFin, humedadSueloInicio, humedadSueloFin, modo } =
