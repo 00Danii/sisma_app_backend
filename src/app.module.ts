@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { SensoresModule } from './sensores/sensores.module';
 import { RiegoModule } from './riego/riego.module';
 import { PlantasModule } from './plantas/plantas.module';
+import { FertilizanteModule } from './fertilizante/fertilizante.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PlantasModule } from './plantas/plantas.module';
     SensoresModule,
     RiegoModule,
     PlantasModule,
+    FertilizanteModule,
   ],
 })
 export class AppModule {}
