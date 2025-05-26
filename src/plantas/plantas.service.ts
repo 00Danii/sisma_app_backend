@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Planta } from './entities/planta.entity';
+import { Repository } from 'typeorm';
 import { CreatePlantaDto } from './dto/create-planta.dto';
 import { UpdatePlantaDto } from './dto/update-planta.dto';
 
 @Injectable()
 export class PlantasService {
-  create(createPlantaDto: CreatePlantaDto) {
-    return 'This action adds a new planta';
+  constructor(
+    @InjectRepository(Planta)
+    private readonly plantaRepo: Repository<Planta>,
+  ) {}
+
+  async create(dto: CreatePlantaDto, imagenPath?: string): Promise<Planta> {
+    const nueva = this.plantaRepo.create({ ...dto, imagen: imagenPath });
+    return this.plantaRepo.save(nueva);
   }
 
-  findAll() {
-    return `This action returns all plantas`;
+  findAll(): Promise<Planta[]> {
+    return this.plantaRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} planta`;
+  async findOne(id: string): Promise<Planta> {
+    const planta = await this.plantaRepo.findOneBy({ id });
+    if (!planta) {
+      throw new Error(`Planta with id ${id} not found`);
+    }
+    return planta;
   }
 
-  update(id: number, updatePlantaDto: UpdatePlantaDto) {
-    return `This action updates a #${id} planta`;
+  async update(id: string, dto: UpdatePlantaDto): Promise<Planta> {
+    await this.plantaRepo.update(id, dto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} planta`;
+  async remove(id: string): Promise<void> {
+    await this.plantaRepo.delete(id);
   }
 }
